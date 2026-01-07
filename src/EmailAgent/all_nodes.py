@@ -1,6 +1,7 @@
 from typing import Literal
 from langgraph.graph import StateGraph, START, END
 from langgraph.types import interrupt, Command, RetryPolicy
+from langgraph.checkpoint.memory import MemorySaver
 from langchain.messages import HumanMessage
 from .utils import EmailAgentState, EmailClassification
 
@@ -173,4 +174,30 @@ def send_reply(state: EmailAgentState) -> dict:
     return {}
 
 
+# Create the graph
+workflow = StateGraph(EmailAgentState)
 
+# Add nodes with appropriate error handling
+workflow.add_node("read_mail", read_email)
+workflow.add_node("classify_intent", classify_intent)
+
+#Add retry policy for nodes that might have transient failures
+workflow.add_node(
+    "search_documentation",
+    search_documentation,
+    retry_policy=RetryPolicy(max_attempts=3)
+)
+
+workflow.add_node("bug_tracking", bug_tracking)
+workflow.add_node("draft_response", draft_response)
+workflow.add_node("human_review", human_review)
+workflow.add_node("send_reply", send_reply)
+
+# Add only the essential edges
+workflow.add_node(START, "read_email")
+workflow.add_edge("read_email", "classify_content")
+workflow.add_edge("send_reply", END)
+
+# Compile with checkpointer for persistence, in case run graph with Local_Server --> Please compile without checkpointer
+memory = MemorySaver()
+app = workflow.compile(checkpointer=memory)
