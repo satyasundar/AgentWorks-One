@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <defs>
+    <linearGradient id="bg128" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4285f4"/>
+      <stop offset="100%" stop-color="#3367d6"/>
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="28" fill="url(#bg128)"/>
+  <!-- Lightbulb body -->
+  <path d="M64 28c-13.25 0-24 10.75-24 24 0 5.5 1.87 10.56 5 14.6L48 80h32l3-13.4c3.13-4.04 5-9.1 5-14.6 0-13.25-10.75-24-24-24z" fill="rgba(255,255,255,0.95)" filter="url(#shadow)"/>
+  <!-- Inner highlight -->
+  <path d="M64 38c-7.73 0-14 6.27-14 14 0 3.08 1 5.93 2.7 8.25l1.8 2.55c1.3 1.8 2.2 3.8 2.7 5.9h2.6c-.1-1.1-.4-2.2-.9-3.2l-.6-1.1 7.7-9.4 7.7 9.4-.6 1.1c-.5 1-.8 2.1-.9 3.2h2.6c.5-2.1 1.4-4.1 2.7-5.9l1.8-2.55A13.93 13.93 0 0078 52c0-7.73-6.27-14-14-14z" fill="#4285f4" opacity="0.3"/>
+  <!-- Question mark -->
+  <text x="64" y="62" text-anchor="middle" font-family="Arial, sans-serif" font-weight="700" font-size="28" fill="#4285f4">?</text>
+  <!-- Bulb base lines -->
+  <rect x="50" y="84" width="28" height="4" rx="2" fill="rgba(255,255,255,0.8)"/>
+  <rect x="52" y="92" width="24" height="4" rx="2" fill="rgba(255,255,255,0.6)"/>
+  <rect x="56" y="100" width="16" height="4" rx="2" fill="rgba(255,255,255,0.4)"/>
+</svg>

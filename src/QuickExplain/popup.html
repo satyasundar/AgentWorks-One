@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    width: 380px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #333;
+    background: #fafafa;
+  }
+
+  /* Header */
+  .header {
+    background: #4285f4;
+    color: #fff;
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .header h1 { font-size: 18px; font-weight: 700; }
+  .header svg { width: 26px; height: 26px; fill: #fff; }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    background: #fff;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  .tabs button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: none;
+    font-size: 13px;
+    font-weight: 600;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+  }
+  .tabs button.active {
+    color: #4285f4;
+    border-bottom-color: #4285f4;
+  }
+
+  .tab-content { display: none; padding: 16px; }
+  .tab-content.active { display: block; }
+
+  /* Settings */
+  label {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 4px;
+    margin-top: 12px;
+  }
+  label:first-child { margin-top: 0; }
+  input[type="text"], input[type="password"], select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+    transition: border 0.2s;
+  }
+  input:focus, select:focus { border-color: #4285f4; }
+
+  .btn {
+    display: inline-block;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 14px;
+  }
+  .btn-primary { background: #4285f4; color: #fff; }
+  .btn-primary:hover { background: #3367d6; }
+  .btn-danger { background: #ea4335; color: #fff; }
+  .btn-danger:hover { background: #c5221f; }
+
+  .status {
+    font-size: 12px;
+    margin-top: 8px;
+    color: #0d904f;
+    min-height: 18px;
+  }
+
+  /* History */
+  .history-list { max-height: 360px; overflow-y: auto; }
+  .history-item {
+    padding: 10px;
+    background: #fff;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+  }
+  .history-item:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+  .history-item .selected-text {
+    font-size: 12px;
+    color: #888;
+    margin-bottom: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .history-item .explanation {
+    font-size: 13px;
+    line-height: 1.5;
+    display: none;
+  }
+  .history-item.expanded .explanation { display: block; margin-top: 6px; }
+  .history-item .meta {
+    font-size: 11px;
+    color: #aaa;
+    margin-top: 4px;
+  }
+  .empty-state {
+    text-align: center;
+    padding: 40px 20px;
+    color: #aaa;
+    font-size: 13px;
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+  <h1>QuickExplain</h1>
+</div>
+
+<div class="tabs">
+  <button class="active" data-tab="settings">Settings</button>
+  <button data-tab="history">History</button>
+</div>
+
+<!-- Settings Tab -->
+<div id="tab-settings" class="tab-content active">
+  <label for="apiKey">Gemini API Key</label>
+  <input type="password" id="apiKey" placeholder="Paste your Gemini API key here" />
+
+  <label for="defaultLength">Default Explanation Length</label>
+  <select id="defaultLength">
+    <option value="short">Short (~50 words)</option>
+    <option value="medium" selected>Medium (~100 words)</option>
+    <option value="detailed">Detailed (~200 words)</option>
+  </select>
+
+  <button class="btn btn-primary" id="saveBtn">Save Settings</button>
+  <div class="status" id="status"></div>
+</div>
+
+<!-- History Tab -->
+<div id="tab-history" class="tab-content">
+  <div class="history-list" id="historyList">
+    <div class="empty-state">No explanations yet. Select text on any page and click "Explain"!</div>
+  </div>
+  <button class="btn btn-danger" id="clearBtn" style="display:none;">Clear History</button>
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
